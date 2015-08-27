@@ -4,6 +4,10 @@ $(document).ready(function () {
     var cy = cytoscape({
         container: document.getElementById('cy'),
 
+        ready: function () {
+            console.log('ready')
+        },
+
         style: cytoscape.stylesheet()
             .selector('node')
             .css({

@@ -7,9 +7,15 @@ var app = app || {};
 
 app.CytoscapeWorkflow = Backbone.Model.extend({
 
+    initialize: function(){
+        console.log('This CytoscapeWorkflow model has been initialized.');
+    },
+
     // Default attributes ensure that each cytoscape workflow created has
     // `style`, `layout` and `elements` keys.
     defaults: {
+        container: document.getElementById('cy'),
+
         style: cytoscape.stylesheet()
             .selector('node')
             .css({
@@ -142,6 +148,8 @@ app.CytoscapeWorkflow = Backbone.Model.extend({
                 {data: {id: 'ij', weight: 8, source: 'i', target: 'j'}}  //Grapher > graph
             ]
         }
+
+
     },
     // Toggle the `completed` state of this todo item.
     toggle: function () {
@@ -151,3 +159,4 @@ app.CytoscapeWorkflow = Backbone.Model.extend({
     }
 
 });
+
