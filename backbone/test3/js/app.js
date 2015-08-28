@@ -7,6 +7,12 @@ var app = app || {};
 $(function () {
     // Kick things off by creating the **App**
     new app.AppView();
+    // We create a CytoscapeWorkflow model here which is used for the whole
+    // web application
+    //var cy_wf = new app.CytoscapeWorkflow();
+    //console.log(cy_wf);
+    // How do we pass the CytoscapeWorkflow model onto the views?
+
     new app.RightNavBarView({el: $("#navbar_right_container")});
 
 });

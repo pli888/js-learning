@@ -3,7 +3,6 @@ var app = app || {};
 app.RightNavBarView = Backbone.View.extend({
 
     initialize: function () {
-
         this.render();
     },
     render: function () {
@@ -11,6 +10,42 @@ app.RightNavBarView = Backbone.View.extend({
         var template = _.template($("#navbar_right_template").html(), {});
         // Load the compiled HTML into the Backbone "el"
         this.$el.html(template);
+    },
+    renderCytoscape: function (cy) {
+        var params = {
+            name: 'dagre',
+            directed: true,
+            roots: '#a',
+            padding: 10,
+            rankDir: 'TB'
+        };
+        var layout = makeLayout();
+        var running = false;
+
+        cy.on('layoutstart', function () {
+            running = true;
+        }).on('layoutstop', function () {
+            running = false;
+        });
+
+        // Detect select on nodes and edges
+        var selected_elements;
+        cy.on('select', function (evt) {
+            console.log('selected: ' + evt.cyTarget.id());
+            selected_elements = cy.elements(':selected');
+        });
+
+        cy.panningEnabled(true);
+        cy.boxSelectionEnabled(true);
+
+        layout.run();
+
+        function makeLayout(opts) {
+            for (var i in opts) {
+                params[i] = opts[i];
+            }
+            return cy.makeLayout(params);
+        }
     },
     events: {
         'click #loadExampleHtmlButton':  'loadExample'
@@ -20,47 +55,14 @@ app.RightNavBarView = Backbone.View.extend({
         // event.currentTarget
         evt.preventDefault();
         console.log("Load example button clicked!");
-        //$('#cy').html('Load example button clicked!');
 
+        // Create cytoscape model and instance
+        var cy_model = new app.CytoscapeWorkflow();
+        // Add default settings from model and example node and edge
+        // elements to a new cytoscape instance
         var cy = cytoscape({
-            container: document.getElementById('cy'),
-
-            style: cytoscape.stylesheet()
-                .selector('node')
-                .css({
-                    'content': 'data(name)',
-                    'shape': 'circle',
-                    'background-color': 'data(color)',
-                    'font-size': 10,
-                    'text-valign': 'bottom',
-                    'color': '#6e6e6e'
-                }
-            )
-                .selector('edge')
-                .css({
-                    'target-arrow-shape': 'triangle',
-                    'width': 2,
-                    'line-color': '#bfbfbf',
-                    'target-arrow-color': '#bfbfbf'
-                })
-
-                // When selected using a dragged box
-                .selector(":selected")
-                .css({
-                    "line-color": "#636363",
-                    "target-arrow-color": "#636363",
-                    "background-blacken": "0.3"
-                })
-
-                .selector('.highlighted')
-                .css({
-                    'background-color': '#61bffc',
-                    'line-color': '#61bffc',
-                    'target-arrow-color': '#61bffc',
-                    'transition-property': 'background-color, line-color, target-arrow-color',
-                    'transition-duration': '0.5s'
-                }),
-
+            container: cy_model.defaults.container,
+            style: cy_model.defaults.style,
             elements: {
                 nodes: [
                     {
@@ -149,40 +151,10 @@ app.RightNavBarView = Backbone.View.extend({
                     {data: {id: 'ij', weight: 8, source: 'i', target: 'j'}}  //Grapher > graph
                 ]
             },
-
-            layout: {
-                name: 'dagre',
-                directed: true,
-                roots: '#a',
-                padding: 10
-            }
+            layout: cy_model.defaults.layout,
+            ready: function(){ console.log('ready') }
         });
-
-        var params = {
-            name: 'dagre',
-            directed: true,
-            roots: '#a',
-            padding: 10,
-            rankDir: 'TB'
-        };
-        var layout = makeLayout();
-        var running = false;
-
-        cy.on('layoutstart', function () {
-            running = true;
-        }).on('layoutstop', function () {
-            running = false;
-        });
-
-        layout.run();
-
-        function makeLayout(opts) {
-            for (var i in opts) {
-                params[i] = opts[i];
-            }
-            return cy.makeLayout(params);
-        }
-
-
+        console.log(cy);
+        this.renderCytoscape(cy);
     }
 });
