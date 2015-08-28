@@ -13,6 +13,6 @@ $(function () {
     //console.log(cy_wf);
     // How do we pass the CytoscapeWorkflow model onto the views?
 
-    new app.RightNavBarView({el: $("#navbar_right_container")});
+    new app.NavBarView({el: $("#navbar_container")});
 
 });

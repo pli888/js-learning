@@ -12,65 +12,8 @@
     <link href="css/cytoscape.css" rel="stylesheet">
 </head>
 <body>
-<!-- Navigation -->
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <a class="navbar-brand" href="http://www.gigasciencejournal.com">
-                <img alt="GigaScience" height="20" src="img/G.png">
-            </a>
-            <ul class="nav navbar-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-                       role="button" aria-haspopup="true" aria-expanded="false">Layout
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a id="layout_tb" href="#">Top to bottom</a></li>
-                        <li><a id="layout_lr" href="#">Left to right</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-                       role="button" aria-haspopup="true" aria-expanded="false">Align
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a id="align_left" href="#">Left</a></li>
-                        <li><a id="align_centre" href="#">Centre</a></li>
-                        <li><a id="align_right" href="#">Right</a></li>
-                        <li><a id="align_top" href="#">Top</a></li>
-                        <li><a id="align_middle" href="#">Middle</a></li>
-                        <li><a id="align_bottom" href="#">Bottom</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-                       role="button" aria-haspopup="true" aria-expanded="false">Distribute
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Horizontally</a></li>
-                        <li><a href="#">Vertically</a></li>
-                    </ul>
-                </li>
-            </ul>
 
-            <div id="navbar_right_container">a</div>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-    <!-- /.container -->
-</nav>
-
+<div id="navbar_container">nav-bar</div>
 
 <!-- Page Content -->
 <div class="container">
@@ -92,28 +35,86 @@
     </footer>
 </div>
 
-<script type="text/template" id="navbar_right_template">
-    <form class="navbar-form navbar-right form-inline center-block"
-          action="/" method="POST" enctype="multipart/form-data">
-        <div class="input-group">
-            <label id="browsebutton"
-                   class="btn btn-default input-group-addon"
-                   for="my-file-selector"
-                   style="background-color:white">
-                <input id="my-file-selector" type="file"
-                       style="display:none;">
-                Select file
-            </label>
-            <input type="text" class="form-control" readonly="">
-        </div>
-        <button id="submitButton" type="submit" class="btn btn-primary">
-            Submit
-        </button>
+<script type="text/template" id="navbar_template">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <a class="navbar-brand" href="http://www.gigasciencejournal.com">
+                    <img alt="GigaScience" height="20" src="img/G.png">
+                </a>
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                           role="button" aria-haspopup="true" aria-expanded="false">Layout
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a id="layout_tb" href="#">Top to bottom</a></li>
+                            <li><a id="layout_lr" href="#">Left to right</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                           role="button" aria-haspopup="true" aria-expanded="false">Align
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a id="align_left" href="#">Left</a></li>
+                            <li><a id="align_centre" href="#">Centre</a></li>
+                            <li><a id="align_right" href="#">Right</a></li>
+                            <li><a id="align_top" href="#">Top</a></li>
+                            <li><a id="align_middle" href="#">Middle</a></li>
+                            <li><a id="align_bottom" href="#">Bottom</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                           role="button" aria-haspopup="true" aria-expanded="false">Distribute
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Horizontally</a></li>
+                            <li><a href="#">Vertically</a></li>
+                        </ul>
+                    </li>
+                </ul>
 
-        <button id="loadExampleHtmlButton" type="submit" class="btn btn-primary">
-            Load example
-        </button>
-    </form>
+                <form class="navbar-form navbar-right form-inline center-block"
+                      action="/" method="POST" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <label id="browsebutton"
+                               class="btn btn-default input-group-addon"
+                               for="my-file-selector"
+                               style="background-color:white">
+                            <input id="my-file-selector" type="file"
+                                   style="display:none;">
+                            Select file
+                        </label>
+                        <input type="text" class="form-control" readonly="">
+                    </div>
+                    <button id="submitButton" type="submit" class="btn btn-primary">
+                        Submit
+                    </button>
+
+                    <button id="loadExampleHtmlButton" type="submit" class="btn btn-primary">
+                        Load example
+                    </button>
+                </form>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
 </script>
 
 <script type="text/template" id="cys-template">
@@ -146,7 +147,7 @@
 <script src="js/lib/underscore-min.js"></script>
 <script src="js/lib/backbone-min.js"></script>
 <script src="js/lib/backbone.localStorage.js"></script>
-<script src="js/views/right-navbar-view.js"></script>
+<script src="js/views/navbar-view.js"></script>
 <script src="js/views/app-view.js"></script>
 <script src="js/models/cytoscape-workflow.js"></script>
 <script src="js/app.js"></script>
