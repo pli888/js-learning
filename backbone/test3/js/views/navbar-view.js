@@ -2,7 +2,12 @@ var app = app || {};
 
 app.NavBarView = Backbone.View.extend({
 
+    cyInstance: null,
+    cy_model: null,
+    selected_elements: null,
+
     initialize: function () {
+        cy_model = new app.CytoscapeWorkflow();
         this.render();
     },
     render: function () {
@@ -11,14 +16,14 @@ app.NavBarView = Backbone.View.extend({
         // Load the compiled HTML into the Backbone "el"
         this.$el.html(template);
     },
-    renderCytoscape: function (cy) {
-        var params = {
-            name: 'dagre',
-            directed: true,
-            roots: '#a',
-            padding: 10,
-            rankDir: 'TB'
-        };
+    renderCytoscape: function (cy, params) {
+
+        // Check cyInstance is not null
+        if (cyInstance === null)
+        {
+            console.log("cyInstance is undefined");
+        }
+
         var layout = makeLayout();
         var running = false;
 
@@ -29,7 +34,7 @@ app.NavBarView = Backbone.View.extend({
         });
 
         // Detect select on nodes and edges
-        var selected_elements;
+        //var selected_elements;
         cy.on('select', function (evt) {
             console.log('selected: ' + evt.cyTarget.id());
             selected_elements = cy.elements(':selected');
@@ -48,7 +53,36 @@ app.NavBarView = Backbone.View.extend({
         }
     },
     events: {
-        'click #loadExampleHtmlButton':  'loadExample'
+        'click #loadExampleHtmlButton': 'loadExample',
+        'click #layout_lr': 'layoutLeftRight',
+        'click #layout_tb': 'layoutTopBottom',
+        'click #align_left': 'alignLeft'
+    },
+    layoutTopBottom: function (evt) {
+        evt.preventDefault();
+        console.log("Left right layout selected!");
+        var params = {
+            name: 'dagre',
+            directed: true,
+            roots: '#a',
+            padding: 10,
+            rankDir: 'TB'
+        };
+        this.renderCytoscape(cyInstance, params);
+
+    },
+    layoutLeftRight: function (evt) {
+        evt.preventDefault();
+        console.log("Left right layout selected!");
+        var params = {
+                    name: 'dagre',
+                    directed: true,
+                    roots: '#a',
+                    padding: 10,
+                    rankDir: 'LR'
+                };
+        this.renderCytoscape(cyInstance, params);
+
     },
     loadExample: function (evt) {
         // Button clicked, you can access the element that was clicked with
@@ -56,11 +90,9 @@ app.NavBarView = Backbone.View.extend({
         evt.preventDefault();
         console.log("Load example button clicked!");
 
-        // Create cytoscape model and instance
-        var cy_model = new app.CytoscapeWorkflow();
-        // Add default settings from model and example node and edge
-        // elements to a new cytoscape instance
-        var cy = cytoscape({
+        // Create cytoscape instance using default model settings and
+        // example nodes and edges
+        cyInstance = cytoscape({
             container: cy_model.defaults.container,
             style: cy_model.defaults.style,
             elements: {
@@ -154,7 +186,15 @@ app.NavBarView = Backbone.View.extend({
             layout: cy_model.defaults.layout,
             ready: function(){ console.log('ready') }
         });
-        console.log(cy);
-        this.renderCytoscape(cy);
+
+        var params = {
+            name: 'dagre',
+            directed: true,
+            roots: '#a',
+            padding: 10,
+            rankDir: 'TB'
+        };
+        console.log(cyInstance);
+        this.renderCytoscape(cyInstance, params);
     }
 });
