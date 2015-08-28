@@ -5,6 +5,8 @@ app.NavBarView = Backbone.View.extend({
     cyInstance: null,
     cy_model: null,
     selected_elements: null,
+    layout: null,
+    running: null,
 
     initialize: function () {
         cy_model = new app.CytoscapeWorkflow();
@@ -24,8 +26,8 @@ app.NavBarView = Backbone.View.extend({
             console.log("cyInstance is undefined");
         }
 
-        var layout = makeLayout();
-        var running = false;
+        layout = makeLayout();
+        running = false;
 
         cy.on('layoutstart', function () {
             running = true;
@@ -56,11 +58,224 @@ app.NavBarView = Backbone.View.extend({
         'click #loadExampleHtmlButton': 'loadExample',
         'click #layout_lr': 'layoutLeftRight',
         'click #layout_tb': 'layoutTopBottom',
-        'click #align_left': 'alignLeft'
+        'click #align_left': 'alignLeft',
+        'click #align_right': 'alignRight',
+        'click #align_centre': 'alignCentre',
+        'click #align_top': 'alignTop',
+        'click #align_middle': 'alignMiddle',
+        'click #align_bottom': 'alignBottom'
+    },
+    alignBottom: function (evt) {
+        evt.preventDefault();// prevent the default anchor functionality
+
+        layout.stop();
+
+        var min_y = 0;
+        for (var i = 0; i < selected_elements.length; i++) {
+            if (selected_elements[i].isNode()) {
+                console.log("position y: ", selected_elements[i].position('y'));
+                if (selected_elements[i].position('y') > min_y) {
+                    min_y = selected_elements[i].position('y');
+                }
+            }
+        }
+
+        console.log("min_y: ", min_y);
+        for (i = 0; i < selected_elements.length; i++) {
+            if (selected_elements[i].isNode()) {
+                selected_elements[i].position('y', min_y);
+                console.log("Node: ", selected_elements[i].position());
+            }
+        }
+
+        var opts = {
+            layoutOpts: {
+                name: 'preset'
+            }
+        };
+        this.renderCytoscape(cyInstance, opts.layoutOpts);
+    },
+    alignMiddle: function (evt) {
+        evt.preventDefault();// prevent the default anchor functionality
+
+        layout.stop();
+
+        var max_y = 0;
+        var min_y = 1000;
+        for (var i = 0; i < selected_elements.length; i++) {
+            if (selected_elements[i].isNode()) {
+                console.log("position y: ", selected_elements[i].position('y'));
+                if (selected_elements[i].position('y') > max_y) {
+                    max_y = selected_elements[i].position('y');
+                }
+                if (selected_elements[i].position('y') < min_y) {
+                    min_y = selected_elements[i].position('y');
+                }
+            }
+        }
+
+        console.log("max_y: ", max_y);
+        console.log("min_y: ", min_y);
+        var diff = (max_y - min_y) / 2;
+        var new_y = min_y + diff
+        console.log("diff: ", diff);
+        console.log("new_y: ", new_y);
+        for (i = 0; i < selected_elements.length; i++) {
+            if (selected_elements[i].isNode()) {
+
+                selected_elements[i].position('y', new_y);
+                console.log("Node: ", selected_elements[i].position());
+            }
+        }
+
+        var opts = {
+            layoutOpts: {
+                name: 'preset'
+            }
+        };
+
+        this.renderCytoscape(cyInstance, opts.layoutOpts);
+    },
+    alignTop: function (evt) {
+        evt.preventDefault();// prevent the default anchor functionality
+
+        layout.stop();
+
+        var max_y = 1000;
+        for (var i = 0; i < selected_elements.length; i++) {
+            if (selected_elements[i].isNode()) {
+                console.log("position y: ", selected_elements[i].position('y'));
+                if (selected_elements[i].position('y') < max_y) {
+                    max_y = selected_elements[i].position('y');
+                }
+            }
+        }
+
+        console.log("max_y: ", max_y);
+        for (i = 0; i < selected_elements.length; i++) {
+            if (selected_elements[i].isNode()) {
+                selected_elements[i].position('y', max_y);
+                console.log("Node: ", selected_elements[i].position());
+            }
+        }
+
+        var opts = {
+            layoutOpts: {
+                name: 'preset'
+            }
+        };
+
+        this.renderCytoscape(cyInstance, opts.layoutOpts);
+    },
+    alignCentre: function (evt) {
+        evt.preventDefault();// prevent the default anchor functionality
+
+        layout.stop();
+
+        var max_x = 0;
+        var min_x = 1000;
+        for (var i = 0; i < selected_elements.length; i++) {
+            if (selected_elements[i].isNode()) {
+                console.log("position x: ", selected_elements[i].position('x'));
+                if (selected_elements[i].position('x') > max_x) {
+                    max_x = selected_elements[i].position('x');
+                }
+                if (selected_elements[i].position('x') < min_x) {
+                    min_x = selected_elements[i].position('x');
+                }
+            }
+        }
+
+        console.log("max_x: ", max_x);
+        console.log("min_x: ", min_x);
+        var diff = (max_x - min_x) / 2;
+        var new_x = min_x + diff
+        console.log("diff: ", diff);
+        console.log("new_x: ", new_x);
+        for (i = 0; i < selected_elements.length; i++) {
+            if (selected_elements[i].isNode()) {
+
+                selected_elements[i].position('x', new_x);
+                console.log("Node: ", selected_elements[i].position());
+            }
+        }
+
+        var opts = {
+            layoutOpts: {
+                name: 'preset'
+            }
+        };
+
+        this.renderCytoscape(cyInstance, opts.layoutOpts);
+    },
+    alignRight: function (evt) {
+        evt.preventDefault();
+        console.log("Right align selected!");
+
+        layout.stop();
+
+        var max_x = 0;
+        for (var i = 0; i < selected_elements.length; i++) {
+            if (selected_elements[i].isNode()) {
+                console.log("position x: ", selected_elements[i].position('x'));
+                if (selected_elements[i].position('x') > max_x) {
+                    max_x = selected_elements[i].position('x');
+                }
+            }
+        }
+
+        console.log("max_x: ", max_x);
+        for (i = 0; i < selected_elements.length; i++) {
+            if (selected_elements[i].isNode()) {
+                selected_elements[i].position('x', max_x);
+                console.log("Node: ", selected_elements[i].position());
+            }
+        }
+
+        var opts = {
+            layoutOpts: {
+                name: 'preset'
+            }
+        };
+
+        this.renderCytoscape(cyInstance, opts.layoutOpts);
+    },
+    alignLeft: function (evt) {
+        evt.preventDefault();
+        console.log("Left align selected!");
+
+        layout.stop();
+
+        var min_x = 1000;
+        for (var i = 0; i < selected_elements.length; i++) {
+            if (selected_elements[i].isNode()) {
+                console.log("position x: ", selected_elements[i].position('x'));
+                if (selected_elements[i].position('x') < min_x) {
+                    min_x = selected_elements[i].position('x');
+                }
+            }
+        }
+
+        console.log("min_x: ", min_x);
+        for (i = 0; i < selected_elements.length; i++) {
+            if (selected_elements[i].isNode()) {
+                selected_elements[i].position('x', min_x);
+                console.log("Node: ", selected_elements[i].position());
+            }
+        }
+
+        var opts = {
+            layoutOpts: {
+                name: 'preset'
+            }
+        };
+
+        this.renderCytoscape(cyInstance, opts.layoutOpts);
+
     },
     layoutTopBottom: function (evt) {
         evt.preventDefault();
-        console.log("Left right layout selected!");
+        console.log("Top bottom layout selected!");
         var params = {
             name: 'dagre',
             directed: true,
