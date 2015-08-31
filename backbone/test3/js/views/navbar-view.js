@@ -63,7 +63,48 @@ app.NavBarView = Backbone.View.extend({
         'click #align_centre': 'alignCentre',
         'click #align_top': 'alignTop',
         'click #align_middle': 'alignMiddle',
-        'click #align_bottom': 'alignBottom'
+        'click #align_bottom': 'alignBottom',
+        'change #my-file-selector': 'readFile'
+    },
+    readFile: function (evt) {
+        console.log("Read file!!");
+
+        var files = evt.target.files;
+        var file = files[0];
+        var jsonString = null;
+        var elementsJsonObj = null;
+
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            var contents = event.target.result;
+            jsonString = cy_model.parseGalaxyWorkflow(contents);
+            console.log(jsonString);
+
+            elementsJsonObj = JSON.parse(jsonString);
+
+            // Create cytoscape instance using default model settings, and
+            // nodes and edges parsed from galaxy workflow
+            var cyInstance = cytoscape({
+                container: cy_model.defaults.container,
+                style: cy_model.defaults.style,
+                elements: elementsJsonObj,
+                layout: cy_model.defaults.layout,
+                ready: function(){ console.log('ready') }
+            });
+
+            var params = {
+                name: 'dagre',
+                directed: true,
+                roots: '#a',
+                padding: 10,
+                rankDir: 'TB'
+            };
+            console.log(cyInstance);
+
+
+        };
+        reader.readAsText(file);
+
     },
     alignBottom: function (evt) {
         evt.preventDefault();// prevent the default anchor functionality
