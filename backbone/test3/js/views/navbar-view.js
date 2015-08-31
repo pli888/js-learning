@@ -84,7 +84,7 @@ app.NavBarView = Backbone.View.extend({
 
             // Create cytoscape instance using default model settings, and
             // nodes and edges parsed from galaxy workflow
-            var cyInstance = cytoscape({
+            cyInstance = cytoscape({
                 container: cy_model.defaults.container,
                 style: cy_model.defaults.style,
                 elements: elementsJsonObj,
