@@ -2,6 +2,7 @@ var app = app || {};
 
 app.NavBarView = Backbone.View.extend({
 
+    // Instance variables
     cyInstance: null,
     cy_model: null,
     selected_elements: null,
@@ -74,6 +75,9 @@ app.NavBarView = Backbone.View.extend({
         var jsonString = null;
         var elementsJsonObj = null;
 
+        // This is a hack to alias that with the original value of this!!!
+        var that = this;
+
         var reader = new FileReader();
         reader.onload = function(event) {
             var contents = event.target.result;
@@ -100,8 +104,7 @@ app.NavBarView = Backbone.View.extend({
                 rankDir: 'TB'
             };
             console.log(cyInstance);
-
-
+            that.renderCytoscape(cyInstance, params);
         };
         reader.readAsText(file);
 
@@ -252,8 +255,9 @@ app.NavBarView = Backbone.View.extend({
     alignRight: function (evt) {
         evt.preventDefault();
         console.log("Right align selected!");
+        console.log(this.selected_elements);
 
-        layout.stop();
+        //layout.stop();
 
         var max_x = 0;
         for (var i = 0; i < selected_elements.length; i++) {
