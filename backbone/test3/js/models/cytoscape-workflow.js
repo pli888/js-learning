@@ -62,17 +62,9 @@ app.CytoscapeWorkflow = Backbone.Model.extend({
             padding: 10
         }
     },
-    // Toggle the `completed` state of this todo item.
-    toggle: function () {
-        this.save({
-            completed: !this.get('completed')
-        });
-    },
     // Parse galaxy workflow, reading its node and edges into
     // this CytoscapeWorkflow model.
     parseGalaxyWorkflow: function (wfJSONString) {
-        console.log("Ok here!");
-
         var wf_obj = JSON.parse(wfJSONString);
         var steps = wf_obj["steps"];
 
@@ -83,8 +75,6 @@ app.CytoscapeWorkflow = Backbone.Model.extend({
         var data_nodes = [];
         var data_edges = [];
         for (var count in steps) {
-            var edge_data_contents = {};
-
             var node_data_contents = {};
             node_data_contents["id"] = "n" + steps[count].id;
             node_data_contents["name"] = steps[count].name;
@@ -98,12 +88,13 @@ app.CytoscapeWorkflow = Backbone.Model.extend({
                 for (var input_connection_key in input_connections) {
                     var input_connection = input_connections[input_connection_key];
                     var edge_id = "n" + input_connection["id"] + "n" + count;
+                    var edge_data_contents = {};
                     edge_data_contents["id"] = edge_id;
                     edge_data_contents["weight"] = "1";
                     edge_data_contents["source"] = "n" + input_connection["id"];
                     edge_data_contents["target"] = "n" + count;
+                    data_edges.push({"data": edge_data_contents});
                 }
-                data_edges.push({"data": edge_data_contents});
             }
             data_nodes.push({"data": node_data_contents});
         }
