@@ -98,13 +98,11 @@
                             <input id="my-file-selector" type="file"
                                    name="file" enctype="multipart/form-data"
                                    style="display:none;">
-                            Select file
+                            Select
                         </label>
-                        <input type="text" class="form-control" readonly="">
+                        <input id="file-name" type="text" class="form-control"
+                               placeholder="Galaxy workflow file">
                     </div>
-                    <button id="submitButton" type="submit" class="btn btn-primary">
-                        Submit
-                    </button>
 
                     <button id="loadExampleHtmlButton" type="submit" class="btn btn-primary">
                         Load example
@@ -129,14 +127,6 @@
             </div>
         </div>
     </div>
-
-    <div class="view">
-        <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
-        <label><%= title %></label>
-        <button class="destroy"></button>
-    </div>
-    <input class="edit" value="<%= title %>">
-
     <p>From cys-template</p>
 </script>
 
