@@ -82,12 +82,14 @@ app.NavBarView = Backbone.View.extend({
         reader.onload = function(event) {
             var contents = event.target.result;
             jsonString = cy_model.parseGalaxyWorkflow(contents);
-            console.log(jsonString);
-
+            //console.log(jsonString);
+            // Show file name in text input box
+            document.getElementById("file-name").value = file.name;
+            // Get node and edges from elements and pass them to cytoscape
+            // instance
             elementsJsonObj = JSON.parse(jsonString);
-
             // Create cytoscape instance using default model settings, and
-            // nodes and edges parsed from galaxy workflow
+            // nodes and edges parsed from the galaxy workflow file
             cyInstance = cytoscape({
                 container: cy_model.defaults.container,
                 style: cy_model.defaults.style,
@@ -110,7 +112,7 @@ app.NavBarView = Backbone.View.extend({
 
     },
     alignBottom: function (evt) {
-        evt.preventDefault();// prevent the default anchor functionality
+        evt.preventDefault();// prevent default anchor functionality
 
         layout.stop();
 
