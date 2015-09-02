@@ -351,6 +351,8 @@ app.NavBarView = Backbone.View.extend({
         // event.currentTarget
         evt.preventDefault();
         console.log("Load example button clicked!");
+        // Show file name in text input box
+        document.getElementById("file-name").value = "Galaxy workflow file";
 
         // Create cytoscape instance using default model settings and
         // example nodes and edges
