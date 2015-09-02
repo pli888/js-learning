@@ -40,83 +40,10 @@ app.AppView = Backbone.View.extend({
         //return this;
     },
 
-    // Add a single todo item to the list by creating a view for it, and
-    // appending its element to the `<ul>`.
-    addOne: function (todo) {
-        var view = new app.TodoView({model: todo});
-        $('#todo-list').append(view.render().el);
-    },
-
     loadExample: function (evt) {
         evt.preventDefault();
         //this.$('#cy').html('loadExample function called!!');
         alert('loadExample function called!!');
         console.log('loadExample function called!!');
-    },
-
-    // Add at the default cytoscape workflow appending its element to the `<ul>`.
-    addDefaultCytoscape: function () {
-        //var view = new app.CysView({ model: todo });
-        //$('#todo-list').append( view.render().el );
-
-        this.$('#cy').html('addDefaultCytoscape function called!!');
-    },
-
-    // Add all items in the **Todos** collection at once.
-    addAll: function () {
-        this.$('#todo-list').html('');
-        app.Todos.each(this.addOne, this);
-    },
-
-    // New
-    filterOne: function (todo) {
-        todo.trigger('visible');
-    },
-
-    // New
-    filterAll: function () {
-        app.Todos.each(this.filterOne, this);
-    },
-
-
-    // New
-    // Generate the attributes for a new Todo item.
-    newAttributes: function () {
-        return {
-            title: this.$input.val().trim(),
-            order: app.Todos.nextOrder(),
-            completed: false
-        };
-    },
-
-    // New
-    // If you hit return in the main input field, create new Todo model,
-    // persisting it to localStorage.
-    createOnEnter: function (event) {
-        if (event.which !== ENTER_KEY || !this.$input.val().trim()) {
-            return;
-        }
-
-        app.Todos.create(this.newAttributes());
-
-        this.$input.val('');
-    },
-
-    // New
-    // Clear all completed todo items, destroying their models.
-    clearCompleted: function () {
-        _.invoke(app.Todos.completed(), 'destroy');
-        return false;
-    },
-
-    // New
-    toggleAllComplete: function () {
-        var completed = this.allCheckbox.checked;
-
-        app.Todos.each(function (todo) {
-            todo.save({
-                'completed': completed
-            });
-        });
     }
 });
